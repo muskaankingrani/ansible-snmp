@@ -5,15 +5,15 @@
   become: yes
 
   tasks:
-  - name: Configure SNMP community string
-    cisco.ios.ios_config:
-      lines:
-        - snmp-server community U&I RO
-      parents: []
-     when: ansible_network_os == 'ios'
+    - name: Configure SNMP community string
+      cisco.ios.ios_config:
+        lines:
+          - snmp-server community U&I RO
+        parents: []
+      when: ansible_network_os == 'ios'
 
-  - name: Configure SNMP  hosts
-    cisco.ios.ios_config:
+    - name: Configure SNMP hosts
+      cisco.ios.ios_config:
         lines:
           - snmp-server host 192.168.11.105 SNMPv2c
         parents: []
