@@ -1,6 +1,6 @@
 ---
 - name: Configure SNMP on Cisco Switch
-  hosts: switches
+  hosts: switch
   gather_facts: no
   become: yes
 
