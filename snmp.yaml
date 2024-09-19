@@ -10,7 +10,7 @@
       lines:
         - snmp-server community U&I RO
       parents: []
-     when: ansible_network_os == 'ios
+     when: ansible_network_os == 'ios'
 
   - name: Configure SNMP  hosts
     cisco.ios.ios_config:
