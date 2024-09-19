@@ -1,25 +1,26 @@
 ---
-- name: Configure SNMP on Cisco Switch
+- name: Configure Cisco Switch Syslog and Logging Trap
   hosts: switch
-  gather_facts: yes  # Set to 'yes' to gather facts about the host, including ansible_network_os
-  become: yes
-
+  gather_facts: no
+  connection: network_cli
   tasks:
-    - name: Debug network OS
-      debug:
-        var: ansible_network_os
-      when: ansible_network_os is defined
-
-    - name: Configure SNMP community string
-      cisco.ios.ios_config:
+    - name: Configure syslog server
+      ios_config:
         lines:
-          - snmp-server community U&I RO
-        parents: []
-      when: ansible_network_os == 'ios'
+          - logging host 192.168.11.105
+      register: syslog_result
 
-    - name: Configure SNMP hosts
-      cisco.ios.ios_config:
+    - name: Set logging trap level to informational
+      ios_config:
         lines:
-          - snmp-server host 192.168.11.105 SNMPv2c
-        parents: []
-      when: ansible_network_os == 'ios'
+          - logging trap informational
+      register: trap_result
+
+    - name: Save the configuration if changes were made
+      ios_command:
+        commands:
+          - write memory
+      when: syslog_result.changed or trap_result.changed
+
+  vars:
+    syslog_server_ip: "192.168.11.105"
