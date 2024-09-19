@@ -1,10 +1,15 @@
 ---
 - name: Configure SNMP on Cisco Switch
   hosts: switch
-  gather_facts: no
+  gather_facts: yes  # Set to 'yes' to gather facts about the host, including ansible_network_os
   become: yes
 
   tasks:
+    - name: Debug network OS
+      debug:
+        var: ansible_network_os
+      when: ansible_network_os is defined
+
     - name: Configure SNMP community string
       cisco.ios.ios_config:
         lines:
