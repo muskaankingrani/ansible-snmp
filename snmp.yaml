@@ -1,9 +1,10 @@
 ---
-- name: Get serial number of <link>Cisco</link> switches
+- name: Get serial number of Cisco switches
   hosts: switch
   gather_facts: no
+  connection: paramiko   # Use Paramiko for the connection
   tasks:
-    - name: Gather facts from <link>Cisco</link> switches
+    - name: Gather facts from Cisco switches
       ios_facts:
         gather_subset: hardware
 
