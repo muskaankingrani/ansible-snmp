@@ -1,27 +1,12 @@
 ---
-- name: Configure Cisco Switch Syslog and Logging Trap
+- name: Get serial number of <link>Cisco</link> switches
   hosts: switch
   gather_facts: no
-  connection: network_cli
   tasks:
-    - name: Configure syslog server
-      ios_config:
-        lines:
-          - logging host 192.168.11.105
-      register: syslog_result
+    - name: Gather facts from <link>Cisco</link> switches
+      ios_facts:
+        gather_subset: hardware
 
-    - name: Set logging trap level to informational
-      ios_config:
-        lines:
-          - logging trap informational
-      register: trap_result
-
-    - name: Save the configuration if changes were made
-      ios_command:
-        commands:
-          - write memory
-      when: syslog_result.changed or trap_result.changed
-
-  vars:
-    syslog_server_ip: "192.168.11.105"
-
+    - name: Display serial number
+      debug:
+        var: ansible_net_serialnum
